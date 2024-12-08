@@ -50,8 +50,7 @@ export default function DashboardApp() {
         </Card>
         </Grid>
         
-          <PenaltyStats/>
-          <HealthyUnHealthy/>
+          
           <WeeklyVechilesPassed/>
         </Grid>
 

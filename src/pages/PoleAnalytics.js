@@ -248,22 +248,6 @@ export default function PoleAnalytics() {
                 </Stack>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={6} textAlign="center">
-              <Card sx={{ p: 3 }}>
-                <Typography variant="h4" sx={{ mb: 3 }}>
-                  Battery Status
-                </Typography>
-                <LinearProgressWithLabel sx={{ mb: 1 }} value={50} />
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} textAlign="center">
-              <Card sx={{ p: 3 }}>
-                <Typography variant="h4" sx={{ mb: 3 }}>
-                  Health Status
-                </Typography>
-                <LinearProgressWithLabel sx={{ mb: 1 }} value={50} />
-              </Card>
-            </Grid>
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <Card
@@ -300,3 +284,4 @@ export default function PoleAnalytics() {
     </Page>
   );
 }
+
