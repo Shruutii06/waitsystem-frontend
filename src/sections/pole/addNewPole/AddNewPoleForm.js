@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
-
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
@@ -61,33 +60,9 @@ export default function AddNewPoleForm({ handleClose, editing, data, callback })
     serialno: Yup.string().required('Serial No. is required'),
     latitude: Yup.string().required('Latitude is required'),
     longitude: Yup.string().required('Longitude is required'),
-    point1X: Yup.string().required('Required field'),
-    point1Y: Yup.string().required('Required field'),
-    point2X: Yup.string().required('Required field'),
-    point2Y: Yup.string().required('Required field'),
-    point3X: Yup.string().required('Required field'),
-    point3Y: Yup.string().required('Required field'),
-    point4X: Yup.string().required('Required field'),
-    point4Y: Yup.string().required('Required field'),
+    
     // location: Yup.string().required('Location is required'),
   });
-
-  const isValidPoint = (point) => {
-    if (point && point.lat && point.long) {
-      return isValidLatitude(point.lat) && isValidLongitude(point.long);
-    }
-    return false;
-  }
-  const isValidPoints = (points) => {
-    let valid = true;
-    valid = (valid && (points.length === 4));
-    if (!valid) return false;
-    for (let i = 0; i < 4; i += 1) {
-      valid = isValidPoint(points[i]);
-      if (!valid) return false;
-    }
-    return valid;
-  }
 
   const formik = useFormik({
     initialValues: {
@@ -95,42 +70,17 @@ export default function AddNewPoleForm({ handleClose, editing, data, callback })
       latitude: editing ? data.latitude : '',
       longitude: editing ? data.longitude : '',
       location: editing ? data.location : '',
-      point1X: editing && data.points && data.points[0] && data.points[0].lat
-        ? data.points[0].lat : '',
-      point1Y: editing && data.points && data.points[0] && data.points[0].long
-        ? data.points[0].long : '',
-      point2X: editing && data.points && data.points[1] && data.points[1].lat
-        ? data.points[1].lat : '',
-      point2Y: editing && data.points && data.points[1] && data.points[1].long
-        ? data.points[1].long : '',
-      point3X: editing && data.points && data.points[2] && data.points[2].lat
-        ? data.points[2].lat : '',
-      point3Y: editing && data.points && data.points[2] && data.points[2].long
-        ? data.points[2].long : '',
-      point4X: editing && data.points && data.points[3] && data.points[3].lat
-        ? data.points[3].lat : '',
-      point4Y: editing && data.points && data.points[3] && data.points[3].long
-        ? data.points[3].long : ''
     },
     validationSchema: AddNewLocationSchema,
     onSubmit: (values, actions) => {
-      console.log(values, locationid);
-      const points = [
-        { lat: values.point1X, long: values.point1Y },
-        { lat: values.point2X, long: values.point2Y },
-        { lat: values.point3X, long: values.point3Y },
-        { lat: values.point4X, long: values.point4Y }
-      ];
       if (locationid && isValidSerialNo(values.serialno) &&
         isValidLongitude(values.longitude) &&
-        isValidPoints(points) &&
         isValidLatitude(values.latitude) && !editing) {
         dispatch(
           AddPole({
             payload: {
               ...values,
               location: locationid,
-              points,
               name: state.name,
             },
             callback: (msg, data, recall) => {
@@ -167,9 +117,8 @@ export default function AddNewPoleForm({ handleClose, editing, data, callback })
       else if (editing) {
         if (callback && state._id && isValidSerialNo(values.serialno) &&
           isValidLongitude(values.longitude) &&
-          isValidPoints(points) &&
           isValidLatitude(values.latitude)) {
-          callback('EDIT_DONE', { ...values, location: state._id, name: state.name, poleid: data._id, points });
+          callback('EDIT_DONE', { ...values, location: state._id, name: state.name, poleid: data._id });
           handleClose();
         }
         else {
@@ -184,39 +133,6 @@ export default function AddNewPoleForm({ handleClose, editing, data, callback })
           });
         }
       }
-      // console.log(values,actions)
-      // dispatch(
-      //   Login({
-      //     payload: values,
-      //     callback: (msg, data, recall) => {
-      //       console.log(data);
-      //       if (msg === 'error' || data.error) {
-      //         setSubmitting(false);
-      //         toast.error(data.error || 'Something went wrong', {
-      //           position: 'top-right',
-      //           autoClose: 5000,
-      //           hideProgressBar: false,
-      //           closeOnClick: true,
-      //           pauseOnHover: true,
-      //           draggable: true,
-      //           progress: undefined,
-      //         });
-      //       } else if (data && data.data && data.data.twofactorEnabled) {
-      //         toast.success('OTP has been sent to your email', {
-      //           position: 'top-right',
-      //           autoClose: 5000,
-      //           hideProgressBar: false,
-      //           closeOnClick: true,
-      //           pauseOnHover: true,
-      //           draggable: true,
-      //           progress: undefined,
-      //         });
-      //         navigate('/twofactorotp', { replace: false, state: { email: values.email, password: values.password } });
-      //       }
-      //       recall();
-      //     },
-      //   })
-      // );
     },
   });
 
@@ -309,117 +225,12 @@ export default function AddNewPoleForm({ handleClose, editing, data, callback })
                     label="Location"
                     type="text"
                     variant="standard"
-                    // {...getFieldProps('location')}
                     error={Boolean(touched.location && errors.location)}
                     helperText={touched.location && errors.location}
                   />
                 )}
               />
               <AddNewLocationDialogBox />
-            </Stack>
-            <Stack sx={{ display: (window.innerWidth > 500 ? "flex" : "block"), flexDirection: "row", justifyContent: "space-between" }}>
-              <TextField
-                margin="dense"
-                id="standard-basic"
-                label="Latitude-1"
-                type="text"
-                fullWidth={false}
-                style={{ width: (window.innerWidth > 500 ? "calc(50% - 20px)" : "100%") }}
-                variant="standard"
-                {...getFieldProps('point1X')}
-                error={Boolean((touched.point1X && errors.point1X) || touched.point1X && !isValidLatitude(values.point1X))}
-                helperText={touched.point1X && errors.point1X}
-              />
-              <TextField
-                margin="dense"
-                id="standard-basic"
-                label="Longitude-1"
-                type="text"
-                fullWidth={false}
-                style={{ width: (window.innerWidth > 500 ? "calc(50% - 20px)" : "100%") }}
-                variant="standard"
-                {...getFieldProps('point1Y')}
-                error={Boolean((touched.point1Y && errors.point1Y) || touched.point1Y && !isValidLongitude(values.point1Y))}
-                helperText={touched.point1Y && errors.point1Y}
-              />
-            </Stack>
-            <Stack sx={{ display: (window.innerWidth > 500 ? "flex" : "block"), flexDirection: "row", justifyContent: "space-between" }}>
-              <TextField
-                margin="dense"
-                id="standard-basic"
-                label="Latitude-2"
-                type="text"
-                fullWidth={false}
-                style={{ width: (window.innerWidth > 500 ? "calc(50% - 20px)" : "100%") }}
-                variant="standard"
-                {...getFieldProps('point2X')}
-                error={Boolean((touched.point2X && errors.point2X) || touched.point2X && !isValidLatitude(values.point2X))}
-                helperText={touched.point2X && errors.point2X}
-              />
-              <TextField
-                margin="dense"
-                id="standard-basic"
-                label="Longitude-2"
-                type="text"
-                fullWidth={false}
-                style={{ width: (window.innerWidth > 500 ? "calc(50% - 20px)" : "100%") }}
-                variant="standard"
-                {...getFieldProps('point2Y')}
-                error={Boolean((touched.point2Y && errors.point2Y) || touched.point2Y && !isValidLongitude(values.point2Y))}
-                helperText={touched.point2Y && errors.point2Y}
-              />
-            </Stack>
-            <Stack sx={{ display: (window.innerWidth > 500 ? "flex" : "block"), flexDirection: "row", justifyContent: "space-between" }}>
-              <TextField
-                margin="dense"
-                id="standard-basic"
-                label="Latitude-3"
-                type="text"
-                fullWidth={false}
-                style={{ width: (window.innerWidth > 500 ? "calc(50% - 20px)" : "100%") }}
-                variant="standard"
-                {...getFieldProps('point3X')}
-                error={Boolean((touched.point3X && errors.point3X) || touched.point3X && !isValidLatitude(values.point3X))}
-                helperText={touched.point3X && errors.point3X}
-              />
-              <TextField
-                margin="dense"
-                id="standard-basic"
-                label="Longitude-3"
-                type="text"
-                fullWidth={false}
-                style={{ width: (window.innerWidth > 500 ? "calc(50% - 20px)" : "100%") }}
-                variant="standard"
-                {...getFieldProps('point3Y')}
-                error={Boolean((touched.point3Y && errors.point3Y) || touched.point3Y && !isValidLongitude(values.point3Y))}
-                helperText={touched.point3Y && errors.point3Y}
-              />
-            </Stack>
-            <Stack sx={{ display: (window.innerWidth > 500 ? "flex" : "block"), flexDirection: "row", justifyContent: "space-between" }}>
-              <TextField
-                margin="dense"
-                id="standard-basic"
-                label="Latitude-4"
-                type="text"
-                fullWidth={false}
-                style={{ width: (window.innerWidth > 500 ? "calc(50% - 20px)" : "100%") }}
-                variant="standard"
-                {...getFieldProps('point4X')}
-                error={Boolean((touched.point4X && errors.point4X) || touched.point4X && !isValidLatitude(values.point4X))}
-                helperText={touched.point4X && errors.point4X}
-              />
-              <TextField
-                margin="dense"
-                id="standard-basic"
-                label="Longitude-4"
-                type="text"
-                fullWidth={false}
-                style={{ width: (window.innerWidth > 500 ? "calc(50% - 20px)" : "100%") }}
-                variant="standard"
-                {...getFieldProps('point4Y')}
-                error={Boolean((touched.point4Y && errors.point4Y) || touched.point4Y && !isValidLongitude(values.point4Y))}
-                helperText={touched.point4Y && errors.point4Y}
-              />
             </Stack>
           </Stack>
           <Stack spacing={3}>
