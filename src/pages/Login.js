@@ -40,6 +40,8 @@ const SectionStyle = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  alignItems: 'center', // Add this line to center horizontally
+  textAlign: 'center', // Optional: to center the text inside
   margin: theme.spacing(2, 0, 2, 2),
 }));
 
@@ -82,7 +84,7 @@ export default function Login() {
 
         {mdUp && (
           <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 15, mb: 5 }}>
+            <Typography variant="h3" sx={{ px: 5, mt: 0, mb: 5 }}>
               Hi, Welcome Back
             </Typography>
             <img src="/static/illustrations/illustration_login.png" alt="login" />
