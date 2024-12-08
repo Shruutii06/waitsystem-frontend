@@ -72,14 +72,7 @@ export default function Login() {
             </Box>
           )}
 
-          {smUp && mdUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2" component={RouterLink} to="/register">
-                Get started
-              </Link>
-            </Typography>
-          )}
+          
         </HeaderStyle>
 
         {mdUp && (
@@ -94,22 +87,21 @@ export default function Login() {
 
         <Container maxWidth="sm">
           <ContentStyle>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h3" sx={{ textAlign: 'center' }} gutterBottom>
               Sign in to Linear Amp-Tech
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
+            <Typography sx={{ color: 'text.secondary', mb: 5, mt: 5 }}>Enter your details below.</Typography>
 
             <LoginForm />
 
-            {!mdUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{' '}
-                <Link variant="subtitle2" component={RouterLink} to="/register">
-                  Get started
-                </Link>
-              </Typography>
-            )}
+            {/* Add this section below the LoginForm */}
+            <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+              Don’t have an account?{' '}
+              <Link variant="subtitle2" component={RouterLink} to="/register">
+                Get started
+              </Link>
+            </Typography>
           </ContentStyle>
         </Container>
       </RootStyle>
