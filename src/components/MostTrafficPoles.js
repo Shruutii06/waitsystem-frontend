@@ -23,15 +23,15 @@ export default function MostTrafficPoles() {
   const getBgcolor = (index) => {
     switch (index) {
       case 1:
-        return '#FFD700AA';
+        return '#B29600';
       case 2:
-        return '#C0C0C0AA';
+        return '#D9B700';
       case 3:
-        return '#CD7F32AA';
+        return '#FFD700';
       case 4:
-        return '#D1E9FC';
+        return '#EDED00';
       case 5:
-        return '#D1E9FC';
+        return '#FFF700';
       default:
         return '#D1E9FC';
     }
@@ -53,7 +53,7 @@ export default function MostTrafficPoles() {
 
   return (
     <>
-      <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-around' }}>
+      <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'left' }}>
         {poles != null &&
           poles.map((pole, index) => {
             return (

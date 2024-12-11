@@ -1,7 +1,7 @@
 import GoogleMapReact from 'google-map-react';
 import PropTypes from 'prop-types';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import { Box, Container, Grid, Typography, Card, Stack, CircularProgress, Divider, Paper, Avatar } from '@mui/material';
+import { Box, Container, Grid, Typography, Card, Stack, CircularProgress, Divider, Paper } from '@mui/material';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -119,14 +119,14 @@ export default function PoleAnalytics() {
     <Page title="Pole Analytics">
       <Container maxWidth="xl">
         <Stack>
-          <Typography variant="h4" mt={0} mb={3}>
+          <Typography variant="h3" mt={0} mb={3}>
             Pole Analytics
           </Typography>
         </Stack>
-        <Grid container spacing={2}>
-          <Grid container spacing={2} item xs={12} sm={12} md={8}>
+        <Grid container spacing={0.2} >
+          <Grid container spacing={1} item xs={12} sm={12} md={8}>
             <Grid item xs={12} sm={12} md={12}>
-              <Card sx={{ p: 3 }}>
+              <Card sx={{ p: 3, maxWidth: '90%', margin: '0 ' }}>
                 <Stack
                   direction={{ xs: 'column', sm: 'row', md: 'row' }}
                   spacing={2}
@@ -170,7 +170,7 @@ export default function PoleAnalytics() {
                   </Stack>
                   <Stack divider={<Divider />} spacing={3}>
                     <Stack
-                      direction="row"
+                      direction="column"
                       spacing={3}
                       divider={<Divider orientation="vertical" flexItem />}
                       justifyContent="center"
@@ -209,40 +209,6 @@ export default function PoleAnalytics() {
                           Last Updated
                         </Typography>
                       </Paper>
-                    </Stack>
-                    <Stack justifyContent="center" alignItems="center" spacing={2}>
-                      <Avatar
-                        src={analytics[poleid].pole.addedBy.photo}
-                        alt={analytics[poleid].pole.addedBy.name}
-                        sx={{
-                          width: 90,
-                          height: 90,
-                          mt: 1,
-                          border: 2.5,
-                          borderColor: '#0043ca',
-                        }}
-                        style={{
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => navigate(`/view-profile/${analytics[poleid].pole.addedBy._id}`)}
-                      />
-                      <Typography variant="button" component="div">
-                        <b>
-                          Added By:{' '}
-                          <span
-                            role="button"
-                            aria-hidden="true"
-                            tabIndex={0}
-                            style={{
-                              marginLeft: 3,
-                              cursor: 'pointer',
-                            }}
-                            onClick={() => navigate(`/view-profile/${analytics[poleid].pole.addedBy._id}`)}
-                          >
-                            {analytics[poleid].pole.addedBy.name}
-                          </span>
-                        </b>
-                      </Typography>
                     </Stack>
                   </Stack>
                 </Stack>
@@ -284,4 +250,3 @@ export default function PoleAnalytics() {
     </Page>
   );
 }
-

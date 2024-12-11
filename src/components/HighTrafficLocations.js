@@ -39,25 +39,28 @@ export default function HighTrafficLocations() {
   const getBgcolor = (index) => {
     switch (index) {
       case 1:
-        return '#FFD700AA';
+        return '#003366'; // Dark Blue (Highest rank)
       case 2:
-        return '#C0C0C0AA';
+        return '#0066cc'; // Medium Blue (Second rank)
       case 3:
-        return '#CD7F32AA';
+        return '#3399ff'; // Light Blue (Third rank)
       case 4:
-        return '#D1E9FC';
+        return '#66ccff'; // Soft Light Blue (Fourth rank)
       case 5:
-        return '#D1E9FC';
+        return '#99ccff'; // Very Light Blue (Fifth rank)
       default:
-        return '#D1E9FC';
+        return '#e6f2ff'; // Very Light Blue-gray (Fallback for others)
     }
   };
-
+  
+  
+  
+  
   if (!places || !places.length) return null;
   return (
     //   <Typography>ronak</Typography>
 
-    <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-around' }}>
+    <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'left' }}>
       {places.map((place, index) => (
         <Grid item style={{ cursor: 'pointer' }} xs={12} sm={6} md={4} key={index}>
           <TrafficLocationsUI
@@ -69,6 +72,7 @@ export default function HighTrafficLocations() {
             bgcolor={getBgcolor(index + 1)}
             id={place._id}
             color="secondary"
+            sx={{ color: 'white' }}
           />
         </Grid>
       ))}

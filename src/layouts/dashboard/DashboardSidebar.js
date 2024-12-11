@@ -1,23 +1,17 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-// material
 import { styled } from '@mui/material/styles';
-import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-
-// hooks
+import { Box, Link, Avatar, Typography, Drawer, Switch } from '@mui/material';
+import { Brightness4, Brightness7 } from '@mui/icons-material'; // Icons for light/dark mode
 import { useSelector } from 'react-redux';
 import useResponsive from '../../hooks/useResponsive';
-// components
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
-//
 import navConfig from './NavConfig';
 
-// ----------------------------------------------------------------------
-
-const DRAWER_WIDTH = 280;
+const DRAWER_WIDTH = 255;
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
@@ -34,18 +28,15 @@ const AccountStyle = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.grey[500_12],
 }));
 
-// ----------------------------------------------------------------------
-
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
+  onThemeToggle: PropTypes.func, // Add this prop for theme toggle function
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, onThemeToggle }) {
   const { pathname } = useLocation();
-
   const isDesktop = useResponsive('up', 'lg');
-
   const authData = useSelector(({ auth }) => auth);
 
   const account = {
@@ -57,8 +48,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     if (isOpenSidebar) {
       onCloseSidebar();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, isOpenSidebar, onCloseSidebar]);
 
   const renderContent = (
     <Scrollbar
@@ -67,11 +57,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-      <Box sx={{ marginLeft: 8, px: 2.5, py: 3, display: 'inline-flex' }}>
+      <Box sx={{ marginLeft: 7, px: 2.5, py: 3, display: 'inline-flex',mt: 0}}>
         <Logo />
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
+      <Box sx={{ mb: 3, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
             <Avatar src={authData.user.photo || account.photoURL} alt="photoURL" />
@@ -90,6 +80,39 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <NavSection navConfig={navConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
+
+      {/* Theme Toggle Button */}
+      <Box
+        sx={{
+          px: 2,
+          py: 2,
+          borderTop: 1,
+          borderColor: 'divider',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="body2" sx={{ mb: 1 }}>
+          Theme
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Brightness7 sx={{ mr: 1, color: 'warning.main' }} />
+          <Switch
+            onChange={onThemeToggle} // This will trigger the theme toggle function
+            sx={{
+              transform: 'scale(1.5)', // Increase the size of the switch
+            }}
+          />
+          <Brightness4 sx={{ ml: 1, color: 'primary.main' }} />
+        </Box>
+      </Box>
     </Scrollbar>
   );
 

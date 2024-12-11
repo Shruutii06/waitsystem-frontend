@@ -28,7 +28,7 @@ export default function Logo({ disabledLink = false, sx }) {
         {' '}
         <image
           id="image0"
-          width="1024"
+          width="1086"
           height="594"
           x="0"
           y="0"

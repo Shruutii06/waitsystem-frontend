@@ -10,7 +10,7 @@ import AccountPopover from './AccountPopover';
 
 // ----------------------------------------------------------------------
 
-const DRAWER_WIDTH = 280;
+const DRAWER_WIDTH = 240;
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
 

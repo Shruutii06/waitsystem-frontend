@@ -1,55 +1,47 @@
+import { useTheme } from '@mui/material/styles';
 import { Grid } from '@mui/material';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { FetchAllPoles } from '../redux/PolesReducer';
+import { useSelector } from 'react-redux';
 import PenaltyStatsUI from './PenaltyStatsUI';
 
+
 export default function PenaltyStats() {
+  const theme = useTheme();
+  
+  // Generate past 7 days for the chart labels
   const past7Days = [...Array(7).keys()].map((index) => {
     const date = new Date();
     date.setDate(date.getDate() - index);
-    return date.toDateString().slice(4);
+    return date.toDateString().slice(4); // Date format e.g., 'Dec 11'
   });
 
-  const dispatch = useDispatch();
+  // Initialize vehicle counts array
+  const vehicles = [0, 0, 0, 0, 0, 0, 0];
   const poles = useSelector(({ pole }) => pole.poles);
 
-  const vechiles = [0, 0, 0, 0, 0, 0, 0];
+  console.log('Poles:', poles); // Debugging the poles data
+
+  // Process poles data and sum up vehicles passed each day for the last 7 days
   if (poles != null) {
     poles.forEach((pole) => {
       for (let i = 0; i < 7; i += 1) {
-        vechiles[i] += pole.pastResults[i];
+        vehicles[i] += pole.pastResults?.[i] || 0; // Ensure `pastResults` exists
       }
     });
   }
 
-  useEffect(() => {
-    if (!poles || !poles.length) {
-      dispatch(
-        FetchAllPoles({
-          callback: (msg, data, recall) => {
-            recall();
-          },
-        })
-      );
-    }
-  }, []);
-
   return (
-    <Grid item xs={12} md={6} lg={8}>
-      <PenaltyStatsUI
-        title="Vehicles Passed"
-        subheader="(+30%) than last Week"
-        chartData={[
-          { label: past7Days[0], value: vechiles[0] },
-          { label: past7Days[1], value: vechiles[1] },
-          { label: past7Days[2], value: vechiles[2] },
-          { label: past7Days[3], value: vechiles[3] },
-          { label: past7Days[4], value: vechiles[4] },
-          { label: past7Days[5], value: vechiles[5] },
-          { label: past7Days[6], value: vechiles[6] },
-        ]}
-      />
+    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
+      <Grid item xs={12} md={6} lg={8}>
+        <PenaltyStatsUI
+          title="Vehicles Passed"
+          subheader="(+30%) than last Week"
+          chartData={past7Days.map((day, index) => ({
+            label: day,
+            value: vehicles[index],
+          }))}
+          chartColors={theme.palette.mode === 'dark' ? ['#FFFFFF', '#D3D3D3'] : ['#000000', '#707070']}
+        />
+      </Grid>
     </Grid>
   );
 }

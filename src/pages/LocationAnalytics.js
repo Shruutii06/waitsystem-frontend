@@ -10,7 +10,6 @@ import {
   Stack,
   CircularProgress,
   Divider,
-  Avatar,
 } from '@mui/material';
 
 import { useTheme } from '@mui/material/styles';
@@ -57,7 +56,6 @@ export default function LocationAnalytics() {
         FetchLocation({
           payload: { id: locationid },
           callback: (msg, data, recall) => {
-            // console.log(msg, data);
             if (msg === 'error') {
               setFetchingerror(true);
               toast.error(typeof data === 'string' ? data : 'Error in fetching location analytics', {
@@ -111,7 +109,7 @@ export default function LocationAnalytics() {
               >
                 <Stack
                   sx={{
-                    p: 0,
+                    p: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -141,9 +139,9 @@ export default function LocationAnalytics() {
                   </Typography>
                 </Stack>
 
-                <Stack divider={<Divider />} spacing={3}>
+                <Stack divider={<Divider />} spacing={3} justifyContent="center" >
                   <Stack
-                    direction="row"
+                    direction="column"
                     spacing={3}
                     divider={<Divider orientation="vertical" flexItem />}
                     justifyContent="center"
@@ -151,7 +149,7 @@ export default function LocationAnalytics() {
                   >
                     <Paper
                       variant="outlined"
-                      sx={{ px: 2.5, py: 1.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}
+                      sx={{ px: 2.5, py: 2.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}
                     >
                       <Box sx={{ mb: 0.5 }}>
                         <Iconify icon={'emojione-monotone:barber-pole'} color="#1877F2" width={32} height={32} />
@@ -168,7 +166,7 @@ export default function LocationAnalytics() {
 
                     <Paper
                       variant="outlined"
-                      sx={{ px: 2.5, py: 1.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}
+                      sx={{ px: 2.5, py: 2.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}
                     >
                       <Box sx={{ mb: 0.5 }}>
                         <Iconify icon={'fluent:vehicle-car-24-filled'} color="#1877F2" width={32} height={32} />
@@ -184,40 +182,6 @@ export default function LocationAnalytics() {
                         Vehicles Passed
                       </Typography>
                     </Paper>
-                  </Stack>
-                  <Stack justifyContent="center" alignItems="center" spacing={2}>
-                    <Avatar
-                      src={location.addedBy.photo}
-                      alt={location.addedBy.name}
-                      sx={{
-                        width: 90,
-                        height: 90,
-                        mt: 1,
-                        border: 2.5,
-                        borderColor: '#0043ca',
-                      }}
-                      style={{
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => navigate(`/view-profile/${location.addedBy._id}`)}
-                    />
-                    <Typography variant="button" component="div">
-                      <b>
-                        Added By:{' '}
-                        <span
-                          role="button"
-                          aria-hidden="true"
-                          tabIndex={0}
-                          style={{
-                            marginLeft: 3,
-                            cursor: 'pointer',
-                          }}
-                          onClick={() => navigate(`/view-profile/${location.addedBy._id}`)}
-                        >
-                          {location.addedBy.name}
-                        </span>
-                      </b>
-                    </Typography>
                   </Stack>
                 </Stack>
               </Stack>
