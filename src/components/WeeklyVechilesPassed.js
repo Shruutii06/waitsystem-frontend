@@ -1,12 +1,11 @@
 import { useTheme } from '@mui/material/styles';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import PenaltyStatsUI from './PenaltyStatsUI';
 
-
 export default function PenaltyStats() {
   const theme = useTheme();
-  
+
   // Generate past 7 days for the chart labels
   const past7Days = [...Array(7).keys()].map((index) => {
     const date = new Date();
@@ -31,7 +30,14 @@ export default function PenaltyStats() {
 
   return (
     <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
+      <Typography variant="h2" align="center" gutterBottom width='25%'>
+          Weekly Vehicles Passed
+        </Typography>
       <Grid item xs={12} md={6} lg={8}>
+        {/* Add the weekly vehicles passed heading here */}
+        
+
+        
         <PenaltyStatsUI
           title="Vehicles Passed"
           subheader="(+30%) than last Week"
@@ -40,6 +46,7 @@ export default function PenaltyStats() {
             value: vehicles[index],
           }))}
           chartColors={theme.palette.mode === 'dark' ? ['#FFFFFF', '#D3D3D3'] : ['#000000', '#707070']}
+            // Background color for the chart
         />
       </Grid>
     </Grid>

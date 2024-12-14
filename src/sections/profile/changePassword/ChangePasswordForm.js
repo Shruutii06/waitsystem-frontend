@@ -98,6 +98,7 @@ export default function ChangePasswordForm() {
               fullWidth
               type={showPassword ? 'text' : 'password'}
               label="Old Password"
+              sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
               {...getFieldProps('oldPassword')}
               InputProps={{
                 endAdornment: (
@@ -116,6 +117,7 @@ export default function ChangePasswordForm() {
               fullWidth
               type={showPassword1 ? 'text' : 'password'}
               label="New Password"
+              sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
               {...getFieldProps('newPassword')}
               InputProps={{
                 endAdornment: (
@@ -134,6 +136,7 @@ export default function ChangePasswordForm() {
               fullWidth
               type={showPassword2 ? 'text' : 'password'}
               label="Confirm Password"
+              sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
               {...getFieldProps('confirmPassword')}
               InputProps={{
                 endAdornment: (

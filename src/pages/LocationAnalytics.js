@@ -1,52 +1,30 @@
-import GoogleMapReact from 'google-map-react';
-import {
-  Paper,
-  Box,
-  Container,
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Stack,
-  CircularProgress,
-  Divider,
-} from '@mui/material';
-
+import { CircularProgress, Grid, Card, Paper, Box, Typography, Divider, Stack, Container, CardContent } from '@mui/material';  // Move MUI imports here
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LocationPieChart from '../components/LocationPieChart';
+import LocationPieChart from '../components/LocationPieChart';  // Other imports below MUI imports
 import Iconify from '../components/Iconify';
 import Page from '../components/Page';
 import { FetchLocation, FetchLocationAnalytics, FetchPolesOfLocation } from '../redux/locationReducer';
 import Error from './Error';
 import { fShortenNumber } from '../utils/formatNumber';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const DEFAULT_IMAGE =
+  'https://media.istockphoto.com/vectors/city-urban-streets-roads-abstract-map-vector-id1137117479?k=20&m=1137117479&s=612x612&w=0&h=56n_1vX4IdhkyNZ0Xj6NfSPA0jZSwf6Ru2K68udk4H4=';
 
 export default function LocationAnalytics() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const DEFAULT_IMAGE =
-    'https://media.istockphoto.com/vectors/city-urban-streets-roads-abstract-map-vector-id1137117479?k=20&m=1137117479&s=612x612&w=0&h=56n_1vX4IdhkyNZ0Xj6NfSPA0jZSwf6Ru2K68udk4H4=';
 
   const { locationid } = useParams();
   const dispatch = useDispatch();
 
   const location = useSelector(({ location }) => location.analytics[locationid]);
   const poles = useSelector(({ location }) => location.poles[locationid]);
-
-  const defaultProps = {
-    center: [59.938043, 30.337157],
-    zoom: 9,
-  };
-
-  const handleApiLoaded = (map, maps) => {
-    // use map and maps objects
-  };
 
   const [Fetchingerror, setFetchingerror] = useState(false);
 
@@ -95,13 +73,13 @@ export default function LocationAnalytics() {
     <Page title="Location Analytics">
       <Container maxWidth="xl">
         <Stack>
-          <Typography variant="h4" mt={0} mb={3}>
+          <Typography variant="h3" mt={0} mb={3}>
             Location Analytics
           </Typography>
         </Stack>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={7} md={8} lg={8} xl={8}>
-            <Card sx={{ p: 3 }}>
+            <Card sx={{ p: 3, backgroundColor: '#e6f3ff' }}>
               <Stack
                 direction={{ xs: 'column', sm: 'column', md: 'row' }}
                 spacing={{ xs: 1.2, sm: 1.2, md: 3 }}
@@ -139,7 +117,7 @@ export default function LocationAnalytics() {
                   </Typography>
                 </Stack>
 
-                <Stack divider={<Divider />} spacing={3} justifyContent="center" >
+                <Stack divider={<Divider />} spacing={3} justifyContent="center">
                   <Stack
                     direction="column"
                     spacing={3}
@@ -149,7 +127,7 @@ export default function LocationAnalytics() {
                   >
                     <Paper
                       variant="outlined"
-                      sx={{ px: 2.5, py: 2.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}
+                      sx={{ px: 2.5, py: 2.5, textAlign: 'center', backgroundColor: '#ffe9a6' }}
                     >
                       <Box sx={{ mb: 0.5 }}>
                         <Iconify icon={'emojione-monotone:barber-pole'} color="#1877F2" width={32} height={32} />
@@ -166,7 +144,7 @@ export default function LocationAnalytics() {
 
                     <Paper
                       variant="outlined"
-                      sx={{ px: 2.5, py: 2.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}
+                      sx={{ px: 2.5, py: 2.5, textAlign: 'center', backgroundColor: '#ffe9a6' }}
                     >
                       <Box sx={{ mb: 0.5 }}>
                         <Iconify icon={'fluent:vehicle-car-24-filled'} color="#1877F2" width={32} height={32} />
@@ -219,15 +197,22 @@ export default function LocationAnalytics() {
             borderRadius: '10px',
           }}
         >
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: 'AIzaSyAd1gCmyfr8mAbDmHj09b6bhe4lEB_qffw' }}
-            defaultCenter={[56.2, 36.1]}
-            defaultZoom={defaultProps.zoom}
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+          {/* React Leaflet Map Component */}
+          <MapContainer
+            center={[56.2, 36.1]}
+            zoom={9}
+            style={{ height: '100%', width: '100%' }}
           >
-            <AnyReactComponent lat={25.2} lng={36.2} text="My Marker" />
-          </GoogleMapReact>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={[25.2, 36.2]}>
+              <Popup>
+                My Marker
+              </Popup>
+            </Marker>
+          </MapContainer>
         </Card>
       </Container>
     </Page>

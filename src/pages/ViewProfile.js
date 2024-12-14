@@ -86,7 +86,7 @@ export default function ViewProfile() {
         </Stack> */}
 
         {mdUp && (
-          <Card sx={{ mt: 4, mb: 2 }}>
+          <Card sx={{ mt: 4, mb: 2, backgroundColor:'#FFFBEE' }}>
             <img
               src="https://wallpaperaccess.com/full/3659764.jpg"
               alt="Profile Cover"
@@ -166,7 +166,7 @@ export default function ViewProfile() {
         )}
         {!mdUp && (
           <Card
-            sx={{ mt: 1, mb: 2 }}
+            sx={{ mt: 1, mb: 2, backgroundColor:'#FFFBEE'}}
             style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
           >
             <img
@@ -245,7 +245,7 @@ export default function ViewProfile() {
           </Card>
         )}
         <Divider />
-        <Card sx={{ my: 2, minWidth: 200, maxWidth: 700, px: 1 }}>
+        <Card sx={{ my: 2, minWidth: 200, maxWidth: 700, px: 1, backgroundColor:'#FFFBEE' }}>
           <TabContext value={value}>
             <TabPanel value="1">
               <ViewProfile1 />

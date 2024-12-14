@@ -24,12 +24,12 @@ export default function ProfileSettings() {
     <Page title="Account Settings">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h3" gutterBottom>
             Account Settings
           </Typography>
         </Stack>
 
-        <Card sx={{ p: 1.5 }}>
+        <Card sx={{ p: 1.5, backgroundColor:'#e6f3ff' }}>
           <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext value={value}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

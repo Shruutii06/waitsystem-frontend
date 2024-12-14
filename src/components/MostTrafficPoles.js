@@ -23,15 +23,15 @@ export default function MostTrafficPoles() {
   const getBgcolor = (index) => {
     switch (index) {
       case 1:
-        return '#B29600';
+        return '#daa606';
       case 2:
-        return '#D9B700';
+        return '#ebbd2f';
       case 3:
-        return '#FFD700';
+        return '#ffc000';
       case 4:
-        return '#EDED00';
+        return '#ffdb6c';
       case 5:
-        return '#FFF700';
+        return '#ffe9a6';
       default:
         return '#D1E9FC';
     }

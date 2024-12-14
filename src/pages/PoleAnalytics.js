@@ -1,4 +1,4 @@
-import GoogleMapReact from 'google-map-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import PropTypes from 'prop-types';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { Box, Container, Grid, Typography, Card, Stack, CircularProgress, Divider, Paper } from '@mui/material';
@@ -61,10 +61,6 @@ export default function PoleAnalytics() {
   };
   const [Fetchingerror, setError] = useState(false);
 
-  const handleApiLoaded = (map, maps) => {
-    // use map and maps objects
-  };
-
   useEffect(() => {
     if (poleid && poleid.length === 24) {
       dispatch(
@@ -124,9 +120,9 @@ export default function PoleAnalytics() {
           </Typography>
         </Stack>
         <Grid container spacing={0.2} >
-          <Grid container spacing={1} item xs={12} sm={12} md={8}>
+          <Grid container spacing={0.5} item xs={12} sm={12} md={8}>
             <Grid item xs={12} sm={12} md={12}>
-              <Card sx={{ p: 3, maxWidth: '90%', margin: '0 ' }}>
+              <Card sx={{ p: 3, maxWidth: '95%', margin: '0 ', backgroundColor:'#e6f3ff' }}>
                 <Stack
                   direction={{ xs: 'column', sm: 'row', md: 'row' }}
                   spacing={2}
@@ -135,10 +131,10 @@ export default function PoleAnalytics() {
                   divider={<Divider orientation="vertical" flexItem />}
                 >
                   <Stack>
-                    <Paper variant="outlined" sx={{ p: 1.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}>
+                    <Paper variant="outlined" sx={{ p: 1.5, textAlign: 'center', backgroundColor: '#ffe9a6' }}>
                       <Stack divider={<Divider />} spacing={3}>
                         <Typography variant="h4">#{analytics[poleid].pole.serialno}</Typography>
-                        <Stack direction="row" spacing={2.5} divider={<Divider orientation="vertical" flexItem />}>
+                        <Stack direction="row" spacing={5.5} divider={<Divider orientation="vertical" flexItem />}>
                           <Stack>
                             <Box sx={{ mb: 0.5 }}>
                               <Iconify icon={'tabler:world-latitude'} color="#1877F2" width={32} height={32} />
@@ -178,7 +174,7 @@ export default function PoleAnalytics() {
                     >
                       <Paper
                         variant="outlined"
-                        sx={{ px: 2.5, py: 1.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}
+                        sx={{ px: 3.5, py: 1.5, textAlign: 'center', backgroundColor: '#ffe9a6' }}
                       >
                         <Box sx={{ mb: 0.5 }}>
                           <Iconify icon={'fluent:vehicle-car-24-filled'} color="#1877F2" width={32} height={32} />
@@ -197,7 +193,7 @@ export default function PoleAnalytics() {
 
                       <Paper
                         variant="outlined"
-                        sx={{ px: 2.5, py: 1.5, textAlign: 'center', backgroundColor: '#D1E9FC' }}
+                        sx={{ px: 4.5, py: 1.5, textAlign: 'center', backgroundColor: '#ffe9a6' }}
                       >
                         <Box sx={{ mb: 0.5 }}>
                           <Iconify icon={'eos-icons:content-modified'} color="#1877F2" width={32} height={32} />
@@ -227,22 +223,26 @@ export default function PoleAnalytics() {
                 Number(Number(analytics[poleid].pole.latitude).toFixed(1)),
                 Number(Number(analytics[poleid].pole.longitude).toFixed(1)),
               ])}
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: 'AIzaSyAd1gCmyfr8mAbDmHj09b6bhe4lEB_qffw' }}
-                defaultCenter={[
+              <MapContainer 
+                center={[
                   Number(Number(analytics[poleid].pole.latitude).toFixed(1)),
-                  Number(Number(analytics[poleid].pole.longitude).toFixed(1)),
-                ]}
-                defaultZoom={defaultProps.zoom}
-                yesIWantToUseGoogleMapApiInternals
-                onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+                  Number(Number(analytics[poleid].pole.longitude).toFixed(1))
+                ]} 
+                zoom={defaultProps.zoom} 
+                style={{ height: '100%', width: '100%' }}
               >
-                <AnyReactComponent
-                  lat={analytics[poleid].pole.latitude}
-                  lng={analytics[poleid].pole.longitude}
-                  text="My Marker"
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-              </GoogleMapReact>
+                <Marker
+                  position={[
+                    Number(analytics[poleid].pole.latitude),
+                    Number(analytics[poleid].pole.longitude)
+                  ]}
+                >
+                  <Popup>My Marker</Popup>
+                </Marker>
+              </MapContainer>
             </Card>
           </Grid>
         </Grid>

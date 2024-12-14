@@ -2,7 +2,6 @@ import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// material
 import {
   Card,
   Table,
@@ -18,21 +17,14 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-// components
 import Page from '../components/Page';
 import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import AddPoleDialogBox from '../components/AddPoleDialogBox';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
-// import MapFooter from './PoleAnalytics';
-// mock
-import USERLIST from '../_mock/user';
-
 import { FetchAllPlaces } from '../redux/locationReducer';
 import { DeletePole, FetchAllPoles, EditPole } from '../redux/PolesReducer';
-
-// ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Serial No.', alignRight: false },
@@ -40,10 +32,9 @@ const TABLE_HEAD = [
   { id: 'role', label: 'Longitude', alignRight: false },
   { id: 'isVerified', label: 'Location', alignRight: false },
   { id: 'status', label: 'Health Status', alignRight: false },
+  { id: 'addedBy', label: 'Added By', alignRight: false },
   { id: '' },
 ];
-
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -77,19 +68,12 @@ function applySortFilter(array, comparator, query) {
 function ManageDevices() {
   const [page, setPage] = useState(0);
   const navigation = useNavigate();
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
   const dispatch = useDispatch();
-
   const places = useSelector(({ location }) => location.Places);
 
   useEffect(() => {
@@ -105,15 +89,14 @@ function ManageDevices() {
   }, []);
 
   const poles = useSelector(({ pole }) => pole.poles);
-
   const [poleFetchingerror, setPoleFetchingError] = useState(false);
 
   const FetchPoles = () => {
     setPoleFetchingError(false);
     dispatch(
       FetchAllPoles({
-        payload:{
-          fetchjunctions:true
+        payload: {
+          fetchjunctions: true,
         },
         callback: (msg, data, recall) => {
           if (msg === 'error') {
@@ -173,7 +156,6 @@ function ManageDevices() {
         );
         break;
       case 'EDIT':
-        // open edit modal
         setEditData(data);
         break;
       case 'EDIT_DONE':
@@ -217,10 +199,6 @@ function ManageDevices() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  // const filteredUsers = applySortFilter(poles, getComparator(order, orderBy), filterName);
-
   const filterPoles = (poles) => {
     if (!Array.isArray(poles)) return null;
     return poles?.filter(
@@ -231,21 +209,20 @@ function ManageDevices() {
   };
 
   const filteredPoles = filterPoles(poles);
-
   const isUserNotFound = filteredPoles && filteredPoles.length === 0;
 
   return (
-    <Page title="Manage Devices">
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
+    <Page title="Manage Devices" >
+      <Container >
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} >
+          <Typography variant="h3" gutterBottom>
             Manage Devices
           </Typography>
           <AddPoleDialogBox />
           {editData && <AddPoleDialogBox data={editData} callback={poleActions} setEditData={setEditData} />}
         </Stack>
 
-        <Card>
+        <Card sx={{ backgroundColor: ' #FFFBEE' }}>
           <UserListToolbar filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
@@ -262,10 +239,18 @@ function ManageDevices() {
                 {filteredPoles ? (
                   <TableBody>
                     {filteredPoles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                      const { _id, latitude, longitude, serialno, healthStatus, batteryStatus, location } = row;
-                      const status = healthStatus === "1" ? 'good' : 'bad';
+                      const { _id, latitude, longitude, serialno, healthStatus, location, addedBy } = row;
+                      const status = healthStatus === '1' ? 'good' : 'bad';
                       return (
-                        <TableRow hover key={index} tabIndex={-1} style={{ cursor: 'pointer' }}>
+                        <TableRow
+                          hover
+                          key={index}
+                          tabIndex={-1}
+                          style={{
+                            cursor: 'pointer',
+                            backgroundColor: index % 2 === 0 ? '#e6f3ff' : '#ffe9a6',
+                          }}
+                        >
                           <TableCell
                             component="th"
                             scope="row"
@@ -274,21 +259,14 @@ function ManageDevices() {
                           >
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Typography sx={{ ml: 3 }} variant="subtitle2" noWrap>
-                                {'#'}
-                                {serialno}
+                                {'#'} {serialno}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell
-                            align="left"
-                            onClick={() => navigation(`/dashboard/pole/${_id}`, { replace: false })}
-                          >
+                          <TableCell align="left" onClick={() => navigation(`/dashboard/pole/${_id}`, { replace: false })}>
                             {latitude}
                           </TableCell>
-                          <TableCell
-                            align="left"
-                            onClick={() => navigation(`/dashboard/pole/${_id}`, { replace: false })}
-                          >
+                          <TableCell align="left" onClick={() => navigation(`/dashboard/pole/${_id}`, { replace: false })}>
                             {longitude}
                           </TableCell>
                           <TableCell
@@ -298,60 +276,41 @@ function ManageDevices() {
                           >
                             {location.name}
                           </TableCell>
-                          <TableCell
-                            align="left"
-                            onClick={() => navigation(`/dashboard/pole/${_id}`, { replace: false })}
-                          >
+                          <TableCell align="left" onClick={() => navigation(`/dashboard/pole/${_id}`, { replace: false })}>
                             <Label variant="ghost" color={(status === 'bad' && 'error') || 'success'}>
                               {sentenceCase(status)}
                             </Label>
                           </TableCell>
-
+                          <TableCell align="left" onClick={() => navigation(`/dashboard/pole/${_id}`, { replace: false })}>
+                            {addedBy || 'N/A'}
+                          </TableCell>
                           <TableCell align="right">
                             <UserMoreMenu callback={poleActions} data={row} />
                           </TableCell>
                         </TableRow>
                       );
                     })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
+                    {filteredPoles.length < rowsPerPage && (
+                      <TableRow style={{ height: 53 * (rowsPerPage - filteredPoles.length) }}>
+                        <TableCell colSpan={7} />
                       </TableRow>
                     )}
                   </TableBody>
                 ) : (
                   <TableBody>
                     <TableRow>
-                      <TableCell colSpan={6} sx={{ py: 1 }}>
-                        <Skeleton variant="rectangular" width="100%" height={53} />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell colSpan={6} sx={{ py: 1 }}>
-                        <Skeleton variant="rectangular" width="100%" height={53} />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell colSpan={6} sx={{ py: 1 }}>
-                        <Skeleton variant="rectangular" width="100%" height={53} />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell colSpan={6} sx={{ py: 1 }}>
-                        <Skeleton variant="rectangular" width="100%" height={53} />
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell colSpan={6} sx={{ py: 1 }}>
+                      <TableCell colSpan={7} sx={{ py: 1 }}>
                         <Skeleton variant="rectangular" width="100%" height={53} />
                       </TableCell>
                     </TableRow>
                   </TableBody>
                 )}
+                          
+
                 {isUserNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
                         <SearchNotFound searchQuery={filterName} />
                       </TableCell>
                     </TableRow>
@@ -364,7 +323,7 @@ function ManageDevices() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={filteredPoles?.length || 0}
+            count={filteredPoles ? filteredPoles.length : 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -377,3 +336,4 @@ function ManageDevices() {
 }
 
 export default ManageDevices;
+

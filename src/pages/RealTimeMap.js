@@ -1,17 +1,33 @@
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import GoogleMapReact from 'google-map-react';
 import { styled } from '@mui/material/styles';
 import { Button, Typography, Container, Box } from '@mui/material';
-// components
+// Leaflet dependencies
+import { MapContainer, TileLayer, Marker as LeafletMarker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+// Leaflet assets
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+// Custom components and data
 import Page from '../components/Page';
 import Marker from './Marker';
-import places from '../utils/Places.json'
+import places from '../utils/Places.json';
+
+
+const defaultIcon = L.icon({
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+L.Marker.prototype.options.icon = defaultIcon;
 
 // ----------------------------------------------------------------------
 
 const ContentStyle = styled('div')(({ theme }) => ({
-  maxWidth: "100%",
+  maxWidth: '100%',
   margin: 'auto',
   minHeight: '100vh',
   display: 'flex',
@@ -22,16 +38,10 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
 export default function Page404() {
   const defaultProps = {
     center: [29.8646495, 77.8938784],
     zoom: 9,
-  };
-
-  const handleApiLoaded = (map, maps) => {
-    // use map and maps objects
   };
 
   return (
@@ -39,61 +49,28 @@ export default function Page404() {
       <Container>
         <ContentStyle sx={{ textAlign: 'center', alignItems: 'center' }}>
           <div style={{ height: '100vh', width: '100%' }}>
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: 'AIzaSyAd1gCmyfr8mAbDmHj09b6bhe4lEB_qffw' }}
-              defaultCenter={defaultProps.center}
-              defaultZoom={defaultProps.zoom}
-              yesIWantToUseGoogleMapApiInternals
-              onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+            <MapContainer
+              center={defaultProps.center}
+              zoom={defaultProps.zoom}
+              style={{ height: '100%', width: '100%' }}
             >
-              {/* <AnyReactComponent lat={59.955413} lng={30.337844} text="My Marker" /> */}
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+              />
               {places.results.map((place) => (
-                <Marker
+                <LeafletMarker
                   key={place.id}
-                  text={place.name}
-                  lat={place.geometry.location.lat}
-                  lng={place.geometry.location.lng}
-                />
+                  position={[place.geometry.location.lat, place.geometry.location.lng]}
+                >
+                  <Popup>{place.name}</Popup>
+                </LeafletMarker>
               ))}
-            </GoogleMapReact>
+            </MapContainer>
           </div>
-          {/* <Typography variant="h3" paragraph>
-            Realtime Map
-          </Typography>
 
-          <div>
-            <iframe
-              title="Realtime Map"
-              width="100%"
-              height="600"
-              // frameborder="0"
-              scrolling="no"
-              // marginheight="0"
-              // marginwidth="0"
-              src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-            >
-              <a href="https://www.gps.ie/wearable-gps/">adventure gps</a>
-            </iframe>
-          </div> */}
+          {/* Add additional UI elements as needed */}
 
-          {/* <Typography variant="h3" paragraph>
-            chalbe
-          </Typography>
-
-          <Typography sx={{ color: 'text.secondary' }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be
-            sure to check your spelling.
-          </Typography>
-
-          <Box
-            component="img"
-            src="/static/illustrations/illustration_404.svg"
-            sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
-          />
-
-          <Button to="/" size="large" variant="contained" component={RouterLink}>
-            Go to Home
-          </Button> */}
         </ContentStyle>
       </Container>
     </Page>

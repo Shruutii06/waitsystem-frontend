@@ -61,7 +61,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, onThem
         <Logo />
       </Box>
 
-      <Box sx={{ mb: 3, mx: 2.5 }}>
+      <Box sx={{ mb: 3, mx: 2.5, backgroundColor:'#e6f3ff' }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
             <Avatar src={authData.user.photo || account.photoURL} alt="photoURL" />
@@ -137,7 +137,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, onThem
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              bgcolor: 'background.default',
+              bgcolor: '#FFFBEE',
               borderRightStyle: 'dashed',
             },
           }}

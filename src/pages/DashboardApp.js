@@ -32,7 +32,7 @@ export default function DashboardApp() {
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
+        <Typography  sx={{ mb: 5, fontSize: '1.8rem', fontWeight: 'bold' }}>
           Hi, Welcome back
           </Typography> 
           

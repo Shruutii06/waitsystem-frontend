@@ -47,6 +47,12 @@ export default function UserListHead({
             key={headCell.id}
             align={headCell.alignRight ? 'right' : 'left'}
             sortDirection={orderBy === headCell.id ? order : false}
+            sx={{
+              backgroundColor: '#fbc02d', // Darker yellow
+              color: '#000', // Black text for better readability
+              fontWeight: 'bold', // Make text bold
+              fontSize: '1.3 rem',
+            }}
           >
             <TableSortLabel
               hideSortIcon
@@ -56,7 +62,9 @@ export default function UserListHead({
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box sx={{ ...visuallyHidden }}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</Box>
+                <Box sx={{ ...visuallyHidden }}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
               ) : null}
             </TableSortLabel>
           </TableCell>

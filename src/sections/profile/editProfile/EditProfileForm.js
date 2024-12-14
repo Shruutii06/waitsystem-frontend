@@ -218,6 +218,7 @@ export default function ProfileForm() {
                   {...getFieldProps('name')}
                   error={Boolean(touched.name && errors.name)}
                   helperText={touched.name && errors.name}
+                  sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
                 />
                 <TextField
                   fullWidth
@@ -227,6 +228,7 @@ export default function ProfileForm() {
                   {...getFieldProps('email')}
                   error={Boolean(touched.email && errors.email)}
                   helperText={touched.email && errors.email}
+                  sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
                 />
                 <TextField
                   fullWidth
@@ -235,6 +237,7 @@ export default function ProfileForm() {
                   {...getFieldProps('location')}
                   error={Boolean(touched.location && errors.location)}
                   helperText={touched.location && errors.location}
+                  sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
                 />
                 <FormControlLabel
                   control={
