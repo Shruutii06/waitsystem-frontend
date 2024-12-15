@@ -98,20 +98,18 @@ const CHART_COLORS = {
   red: ['#FF6C40', '#FF8F6D', '#FFBD98', '#FFF2D4'],
 };
 
-const palette = {
-  common: { black: '#000', white: '#fff' },
-  primary: { ...PRIMARY },
-  secondary: { ...SECONDARY },
-  info: { ...INFO },
-  success: { ...SUCCESS },
-  warning: { ...WARNING },
-  error: { ...ERROR },
-  grey: GREY,
-  gradients: GRADIENTS,
-  chart: CHART_COLORS,
-  divider: GREY[500_24],
-  text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-  background: { paper: '#fff', default: GREY[100], neutral: GREY[200] },
+// Add mode-specific backgrounds and text colors
+const light = {
+  text: {
+    primary: GREY[800],
+    secondary: GREY[600],
+    disabled: GREY[500],
+  },
+  background: {
+    paper: '#fff',
+    default: GREY[100],
+    neutral: GREY[200],
+  },
   action: {
     active: GREY[600],
     hover: GREY[500_8],
@@ -123,5 +121,44 @@ const palette = {
     disabledOpacity: 0.48,
   },
 };
+
+const dark = {
+  text: {
+    primary: '#fff',
+    secondary: GREY[500],
+    disabled: GREY[600],
+  },
+  background: {
+    paper: GREY[800],
+    default: GREY[900],
+    neutral: GREY[800],
+  },
+  action: {
+    active: GREY[500],
+    hover: GREY[500_8],
+    selected: GREY[500_16],
+    disabled: GREY[500_80],
+    disabledBackground: GREY[500_24],
+    focus: GREY[500_24],
+    hoverOpacity: 0.08,
+    disabledOpacity: 0.48,
+  },
+};
+
+const palette = (mode) => ({
+  mode,
+  common: { black: '#000', white: '#fff' },
+  primary: { ...PRIMARY },
+  secondary: { ...SECONDARY },
+  info: { ...INFO },
+  success: { ...SUCCESS },
+  warning: { ...WARNING },
+  error: { ...ERROR },
+  grey: GREY,
+  gradients: GRADIENTS,
+  chart: CHART_COLORS,
+  divider: mode === 'light' ? GREY[500_24] : GREY[500_12],
+  ...(mode === 'light' ? light : dark),
+});
 
 export default palette;

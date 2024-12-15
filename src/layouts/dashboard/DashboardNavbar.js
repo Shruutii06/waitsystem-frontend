@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
 // components
+import { useColorMode } from '../../theme';
 import Iconify from '../../components/Iconify';
 //
 import Searchbar from './Searchbar';
@@ -18,7 +19,7 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
   backdropFilter: 'blur(6px)',
   WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
-  backgroundColor: alpha('#e6f3ff', 0.72),
+  backgroundColor: alpha(theme.palette.background.default, 0.52),
   [theme.breakpoints.up('lg')]: {
     width: `calc(100% - ${DRAWER_WIDTH + 1}px)`,
   },
@@ -39,6 +40,7 @@ DashboardNavbar.propTypes = {
 };
 
 export default function DashboardNavbar({ onOpenSidebar }) {
+  const { toggleColorMode, mode } = useColorMode();
   return (
     <RootStyle>
       <ToolbarStyle>
@@ -47,9 +49,17 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         </IconButton>
 
         <Searchbar />
+
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack sx={{ mx: 2 }} direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+          <IconButton
+            onClick={toggleColorMode}
+            sx={{ backgroundColor: mode === 'light' ? '#919EAB1F' : '#919EAB1F', mr: 0.5 }}
+            spacing={{ xs: 0.5, sm: 1.5 }}
+          >
+            <Iconify icon={mode === 'light' ? 'eva:moon-fill' : 'eva:sun-fill'} />
+          </IconButton>
           <AccountPopover />
         </Stack>
       </ToolbarStyle>

@@ -1,4 +1,5 @@
 import { Box, Card, Divider, Grid, Paper, Stack, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles'; // Import useTheme to access the theme
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -6,9 +7,11 @@ import TrafficLocationsUI from './TrafficLocationsUI';
 import { FetchAllPoles } from '../redux/PolesReducer';
 import Iconify from './Iconify';
 
+
 export default function MostTrafficPoles() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme(); // Get the current theme
   let poles = useSelector(({ pole }) => pole.poles);
 
   if (poles != null) {
@@ -47,7 +50,7 @@ export default function MostTrafficPoles() {
         })
       );
     }
-  }, []);
+  }, [poles, dispatch]);
 
   if (!poles || !poles.length) return null;
 
@@ -70,19 +73,34 @@ export default function MostTrafficPoles() {
                   <Stack
                     justifyContent="center"
                     alignItems="center"
-                    divider={<Divider orientation="horizontal" flexItem />}
+                    divider={
+                      <Divider
+                        orientation="horizontal"
+                        flexItem
+                        sx={{
+                          backgroundColor: theme.palette.mode === 'dark' ? '#ffffff' : '#000000', // Divider color based on the theme
+                        }}
+                      />
+                    }
                     spacing={3}
                   >
-                    <Typography variant="h4">#{pole.serialno}</Typography>
-                    <Stack direction="row" spacing={2.5} divider={<Divider orientation="vertical" flexItem />}>
+                    <Typography variant="h4" sx={{ color: theme.palette.text.primary }}>
+                      #{pole.serialno}
+                    </Typography>
+                    <Stack direction="row" spacing={2.5} divider={<Divider orientation="vertical" flexItem
+                        sx={{
+                          backgroundColor: theme.palette.mode === 'dark' ? '#ffffff' : '#000000', // Divider color based on the theme
+                        }} />} >
                       <Stack>
                         <Box sx={{ mb: 0.5 }}>
                           <Iconify icon={'tabler:world-latitude'} color="#1877F2" width={32} height={32} />
                         </Box>
 
-                        <Typography variant="h6">{pole.latitude}</Typography>
+                        <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
+                          {pole.latitude}
+                        </Typography>
 
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
                           Latitude
                         </Typography>
                       </Stack>
@@ -91,14 +109,16 @@ export default function MostTrafficPoles() {
                           <Iconify icon={'tabler:world-longitude'} color="#1877F2" width={32} height={32} />
                         </Box>
 
-                        <Typography variant="h6">{pole.longitude}</Typography>
+                        <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
+                          {pole.longitude}
+                        </Typography>
 
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
                           Longitude
                         </Typography>
                       </Stack>
                     </Stack>
-                    <Typography variant="h6" sx={{ textTransform: 'capitalize' }}>
+                    <Typography variant="h6" sx={{ textTransform: 'capitalize', color: theme.palette.text.primary }}>
                       {pole.location?.name}
                     </Typography>
                   </Stack>

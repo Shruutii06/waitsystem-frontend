@@ -17,6 +17,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import EnterOTP from './pages/EnterOTP';
 import TwofactorOTP from './pages/TwofactorOTP';
 import ProfileSettings from './pages/ProfileSettings';
+import MapContainer from './pages/MapContainer';
 
 import { Constants } from './utils/Constants';
 
@@ -53,7 +54,7 @@ export default function Router() {
         { path: 'manage-devices', element: !notAuthenticated ? <ManageDevices /> : <Navigate to="/login" /> },
         { path: 'products', element: !notAuthenticated ? <Products /> : <Navigate to="/login" /> },
         { path: 'blog', element: !notAuthenticated ? <Blog /> : <Navigate to="/login" /> },
-        { path: 'realtimemap', element: <RealTimeMap /> },
+        { path: 'realtimemap', element: <MapContainer /> },
         {
           path: 'pole/:poleid',
           element: <PoleAnalytics key={window.location.pathname} />,

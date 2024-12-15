@@ -18,6 +18,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { useTheme } from '@mui/material/styles';
+
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -33,6 +35,7 @@ import ViewProfile3 from '../components/ViewProfile3';
 
 export default function ViewProfile() {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const [value, setValue] = useState('1');
 
   const handleChange = (event, newValue) => {
@@ -61,6 +64,15 @@ export default function ViewProfile() {
       })
     );
   };
+  useEffect(() => {
+    // Apply background color based on theme when component mounts
+    document.body.style.backgroundColor = theme.palette.background.default;
+
+    // Cleanup the background color when component unmounts
+    return () => {
+      document.body.style.backgroundColor = '';
+    };
+  }, [theme]);
 
   useEffect(() => {
     setProfileFetchingError(false);
@@ -86,7 +98,7 @@ export default function ViewProfile() {
         </Stack> */}
 
         {mdUp && (
-          <Card sx={{ mt: 4, mb: 2, backgroundColor:'#FFFBEE' }}>
+          <Card sx={{ mt: 4, mb: 2 }}>
             <img
               src="https://wallpaperaccess.com/full/3659764.jpg"
               alt="Profile Cover"
@@ -166,7 +178,7 @@ export default function ViewProfile() {
         )}
         {!mdUp && (
           <Card
-            sx={{ mt: 1, mb: 2, backgroundColor:'#FFFBEE'}}
+            sx={{ mt: 1, mb: 2 }}
             style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
           >
             <img
@@ -245,7 +257,7 @@ export default function ViewProfile() {
           </Card>
         )}
         <Divider />
-        <Card sx={{ my: 2, minWidth: 200, maxWidth: 700, px: 1, backgroundColor:'#FFFBEE' }}>
+        <Card sx={{ my: 2, minWidth: 200, maxWidth: 700, px: 1 }}>
           <TabContext value={value}>
             <TabPanel value="1">
               <ViewProfile1 />

@@ -1,19 +1,13 @@
-import { Link as RouterLink } from 'react-router-dom';
-// @mui
-import { styled } from '@mui/material/styles';
-import { Button, Typography, Container, Box } from '@mui/material';
-// Leaflet dependencies
+import { useEffect } from 'react';
+import { useTheme, styled } from '@mui/material/styles';
+import { Container, Stack, Typography } from '@mui/material'; 
 import { MapContainer, TileLayer, Marker as LeafletMarker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-// Leaflet assets
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-// Custom components and data
 import Page from '../components/Page';
-import Marker from './Marker';
 import places from '../utils/Places.json';
-
 
 const defaultIcon = L.icon({
   iconUrl: markerIcon,
@@ -24,8 +18,6 @@ const defaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = defaultIcon;
 
-// ----------------------------------------------------------------------
-
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: '100%',
   margin: 'auto',
@@ -34,11 +26,25 @@ const ContentStyle = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   flexDirection: 'column',
   padding: theme.spacing(12, 0),
+  backgroundColor: theme.palette.background.default, // Ensures background color is applied
 }));
 
-// ----------------------------------------------------------------------
+export default function RealTimeMap() {
+  const theme = useTheme();  // Access theme for dynamic styling
 
-export default function Page404() {
+  // Apply background color to the entire body when the component is mounted
+  useEffect(() => {
+    // Apply background color to the body and root container
+    document.body.style.backgroundColor = theme.palette.background.default;
+    document.getElementById('root').style.backgroundColor = theme.palette.background.default;
+
+    // Cleanup the background color when component unmounts
+    return () => {
+      document.body.style.backgroundColor = '';
+      document.getElementById('root').style.backgroundColor = '';
+    };
+  }, [theme]);
+
   const defaultProps = {
     center: [29.8646495, 77.8938784],
     zoom: 9,
@@ -46,7 +52,14 @@ export default function Page404() {
 
   return (
     <Page title="Realtime Map">
-      <Container>
+      <Container sx={{ backgroundColor: theme.palette.background.default }}>
+        <Stack sx={{ mt: '0', mb: '0' }}>
+          <Typography variant="h3" color={theme.palette.text.primary}>
+            Realtime Map
+          </Typography>
+        </Stack>
+
+        {/* Apply background color for content */}
         <ContentStyle sx={{ textAlign: 'center', alignItems: 'center' }}>
           <div style={{ height: '100vh', width: '100%' }}>
             <MapContainer
@@ -68,9 +81,6 @@ export default function Page404() {
               ))}
             </MapContainer>
           </div>
-
-          {/* Add additional UI elements as needed */}
-
         </ContentStyle>
       </Container>
     </Page>

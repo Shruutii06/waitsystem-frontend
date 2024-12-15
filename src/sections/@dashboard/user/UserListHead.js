@@ -48,8 +48,8 @@ export default function UserListHead({
             align={headCell.alignRight ? 'right' : 'left'}
             sortDirection={orderBy === headCell.id ? order : false}
             sx={{
-              backgroundColor: '#fbc02d', // Darker yellow
-              color: '#000', // Black text for better readability
+              backgroundColor: 'background.default', // Darker yellow
+              color: 'theme.palette.text.primary', // Black text for better readability
               fontWeight: 'bold', // Make text bold
               fontSize: '1.3 rem',
             }}

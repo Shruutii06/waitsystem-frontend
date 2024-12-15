@@ -1,22 +1,22 @@
 /* Base colors */
 :root {
-  --primary-bg-light: #ffffff;
-  --primary-bg-dark: #121212;
+  --primary-bg-light: #ffffff; /* Light background */
+  --primary-bg-dark: #121212;  /* Dark background */
 
-  --primary-text-light: #000000;
-  --primary-text-dark: #ffffff;
+  --primary-text-light: #000000; /* Light text */
+  --primary-text-dark: #ffffff;  /* Dark text */
 
-  --secondary-bg-light: #f4f4f4;
-  --secondary-bg-dark: #1e1e1e;
+  --secondary-bg-light: #f4f4f4;  /* Light secondary background */
+  --secondary-bg-dark: #1e1e1e;   /* Dark secondary background */
 
-  --highlight-light: #00e673;
-  --highlight-dark: #00e673;
+  --highlight-light: #00e673;  /* Highlight color */
+  --highlight-dark: #00e673;   /* Highlight color (same for both themes) */
 
-  --card-bg-light: #f9f9f9;
-  --card-bg-dark: #333333;
+  --card-bg-light: #f9f9f9;   /* Light card background */
+  --card-bg-dark: #333333;    /* Dark card background */
 
-  --border-light: #ddd;
-  --border-dark: #444;
+  --border-light: #ddd;       /* Light border color */
+  --border-dark: #444;        /* Dark border color */
 }
 
 /* Apply light theme by default */
@@ -25,35 +25,33 @@ body {
   color: var(--primary-text-light);
 }
 
+/* Dark theme adjustments */
 body.dark-theme {
   background-color: var(--primary-bg-dark);
   color: var(--primary-text-dark);
 }
 
-body.dark-theme .location_details_cardbox img {
-  background: var(--highlight-dark);
-}
-
-/* Adjust for light theme */
+/* Highlight color for light theme */
 body {
   --highlight-color: var(--highlight-light);
   --card-bg: var(--card-bg-light);
   --border-color: var(--border-light);
 }
 
-/* Adjust for dark theme */
+/* Highlight color for dark theme */
 body.dark-theme {
   --highlight-color: var(--highlight-dark);
   --card-bg: var(--card-bg-dark);
   --border-color: var(--border-dark);
 }
 
-
+/* Font styling */
 .fixFont {
   font-size: 1em;
-  color: var(--primary-text); /* Update color variable for text */
+  color: var(--primary-text-light); /* Keep light theme text color by default */
 }
 
+/* Card styles */
 .location_details_cardbox img {
   width: calc(100% - 20px);
   margin: 10px !important;
@@ -62,29 +60,30 @@ body.dark-theme {
 
 .location_details_card {
   height: 100%;
-  background-color: var(--card-bg); /* Use the card background color variable */
+  background-color: var(--card-bg); /* Use card background color based on theme */
 }
 
 .location_details_cardbox {
   flex-direction: column-reverse;
   width: 100%;
   background-color: var(--secondary-bg); /* Background color for the box */
-  border: 1px solid var(--border-color); /* Border color for light/dark theme */
+  border: 1px solid var(--border-color); /* Border color based on theme */
 }
 
+/* Masonry grid styles */
 .my-masonry-grid {
   display: flex;
-  margin-left: -30px; /* gutter size offset */
+  margin-left: -30px; /* Gutter size offset */
   width: auto;
 }
 
 .my-masonry-grid_column {
-  padding-left: 30px; /* gutter size */
+  padding-left: 30px; /* Gutter size */
   background-clip: padding-box;
 }
 
-/* Style your items */
+/* Style masonry grid items */
 .my-masonry-grid_column > div {
-  background: var(--highlight-color); /* Background color for items */
+  background: var(--highlight-color); /* Item background color */
   margin-bottom: 30px;
 }

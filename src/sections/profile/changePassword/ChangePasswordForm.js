@@ -5,6 +5,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // material
 import { Box, Container, Stack, TextField, IconButton, InputAdornment, Button } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { useTheme } from '@mui/material/styles';
 // component
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -15,6 +16,7 @@ import { UpdatePassword } from '../../../redux/AuthReducer';
 
 export default function ChangePasswordForm() {
   const navigate = useNavigate();
+  const theme= useTheme();
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -98,7 +100,11 @@ export default function ChangePasswordForm() {
               fullWidth
               type={showPassword ? 'text' : 'password'}
               label="Old Password"
-              sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
+              sx={{
+                backgroundColor: theme.palette.mode === 'light' ? '#e6f2ff' : '#002a51',
+                borderRadius: '8px',
+                color: theme.palette.text.dark,
+              }}
               {...getFieldProps('oldPassword')}
               InputProps={{
                 endAdornment: (
@@ -117,7 +123,11 @@ export default function ChangePasswordForm() {
               fullWidth
               type={showPassword1 ? 'text' : 'password'}
               label="New Password"
-              sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
+              sx={{
+                backgroundColor: theme.palette.mode === 'light' ? '#e6f2ff' : '#002a51',
+                borderRadius: '8px',
+                color: theme.palette.text.dark,
+              }}
               {...getFieldProps('newPassword')}
               InputProps={{
                 endAdornment: (
@@ -136,7 +146,11 @@ export default function ChangePasswordForm() {
               fullWidth
               type={showPassword2 ? 'text' : 'password'}
               label="Confirm Password"
-              sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
+              sx={{
+                backgroundColor: theme.palette.mode === 'light' ? '#e6f2ff' : '#002a51',
+                borderRadius: '8px',
+                color: theme.palette.text.dark,
+              }}
               {...getFieldProps('confirmPassword')}
               InputProps={{
                 endAdornment: (

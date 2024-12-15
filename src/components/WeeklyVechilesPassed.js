@@ -30,7 +30,13 @@ export default function PenaltyStats() {
 
   return (
     <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
-      <Typography variant="h2" align="center" gutterBottom width='25%'>
+       <Typography
+        variant="h2"
+        align="center"
+        gutterBottom
+        width="25%"
+        sx={{ color: theme.palette.text.primary }} // Adjust text color based on the theme
+      >
           Weekly Vehicles Passed
         </Typography>
       <Grid item xs={12} md={6} lg={8}>

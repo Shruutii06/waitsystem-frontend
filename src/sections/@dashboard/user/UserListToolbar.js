@@ -20,7 +20,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
   }),
-  backgroundColor: '#e3f2fd', // Light blue background
+  backgroundColor: 'background.default.dark', // Light blue background
   '&.Mui-focused': { 
     width: 320, 
     boxShadow: theme.customShadows.z8 

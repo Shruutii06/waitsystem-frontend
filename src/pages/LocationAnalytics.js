@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, Card, Paper, Box, Typography, Divider, Stack, Container, CardContent } from '@mui/material';  // Move MUI imports here
+import { CircularProgress, Grid, Card, Paper, Box, Typography, Divider, Stack, Container, CardContent } from '@mui/material';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LocationPieChart from '../components/LocationPieChart';  // Other imports below MUI imports
+import LocationPieChart from '../components/LocationPieChart';
 import Iconify from '../components/Iconify';
 import Page from '../components/Page';
 import { FetchLocation, FetchLocationAnalytics, FetchPolesOfLocation } from '../redux/locationReducer';
@@ -27,6 +27,16 @@ export default function LocationAnalytics() {
   const poles = useSelector(({ location }) => location.poles[locationid]);
 
   const [Fetchingerror, setFetchingerror] = useState(false);
+
+  useEffect(() => {
+    // Apply background color to the entire body when the component is mounted
+    document.body.style.backgroundColor = theme.palette.background.default;
+
+    // Cleanup the background color when the component is unmounted
+    return () => {
+      document.body.style.backgroundColor = '';
+    };
+  }, [theme]);
 
   useEffect(() => {
     if (locationid && locationid.length === 24) {
@@ -73,17 +83,22 @@ export default function LocationAnalytics() {
     <Page title="Location Analytics">
       <Container maxWidth="xl">
         <Stack>
-          <Typography variant="h3" mt={0} mb={3}>
+          <Typography  sx={{ 
+                  mb: 3, 
+                  ml: 2, 
+                  color: theme.palette.text.primary // Text color based on theme
+                }} 
+                variant="h3">
             Location Analytics
           </Typography>
         </Stack>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={7} md={8} lg={8} xl={8}>
-            <Card sx={{ p: 3, backgroundColor: '#e6f3ff' }}>
+            <Card sx={{ p: 3, backgroundColor: theme.palette.background.paper }}>
               <Stack
                 direction={{ xs: 'column', sm: 'column', md: 'row' }}
                 spacing={{ xs: 1.2, sm: 1.2, md: 3 }}
-                divider={<Divider orientation="vertical" flexItem />}
+                divider={<Divider orientation="vertical" flexItem sx={{ backgroundColor: theme.palette.divider }} />}
               >
                 <Stack
                   sx={{
@@ -117,17 +132,23 @@ export default function LocationAnalytics() {
                   </Typography>
                 </Stack>
 
-                <Stack divider={<Divider />} spacing={3} justifyContent="center">
+                <Stack divider={<Divider sx={{ backgroundColor: theme.palette.divider }} />} spacing={3} justifyContent="center">
                   <Stack
                     direction="column"
                     spacing={3}
-                    divider={<Divider orientation="vertical" flexItem />}
+                    divider={<Divider orientation="vertical" flexItem sx={{ backgroundColor: theme.palette.divider }} />}
                     justifyContent="center"
                     alignItems="center"
                   >
                     <Paper
                       variant="outlined"
-                      sx={{ px: 2.5, py: 2.5, textAlign: 'center', backgroundColor: '#ffe9a6' }}
+                      sx={{
+                        px: 2.5,
+                        py: 2.5,
+                        textAlign: 'center',
+                        backgroundColor:
+                          theme.palette.mode === 'light' ? '#e6f2ff' : theme.palette.background.default, // Light blue for light mode, default bg for dark mode
+                      }}
                     >
                       <Box sx={{ mb: 0.5 }}>
                         <Iconify icon={'emojione-monotone:barber-pole'} color="#1877F2" width={32} height={32} />
@@ -144,7 +165,13 @@ export default function LocationAnalytics() {
 
                     <Paper
                       variant="outlined"
-                      sx={{ px: 2.5, py: 2.5, textAlign: 'center', backgroundColor: '#ffe9a6' }}
+                      sx={{
+                        px: 2.5,
+                        py: 2.5,
+                        textAlign: 'center',
+                        backgroundColor:
+                          theme.palette.mode === 'light' ? '#e6f2ff' : theme.palette.background.default, // Light blue for light mode, default bg for dark mode
+                      }}
                     >
                       <Box sx={{ mb: 0.5 }}>
                         <Iconify icon={'fluent:vehicle-car-24-filled'} color="#1877F2" width={32} height={32} />
@@ -178,7 +205,7 @@ export default function LocationAnalytics() {
                   />
                 ) : (
                   <Stack direction="column" spacing={6} justifyContent="space-between" alignItems="center">
-                    <Typography variant="h5" component="div">
+                    <Typography variant="h5" component="div" color="text.primary">
                       Sorry, No Data to Show!
                     </Typography>
                     <img alt="nodata" src="/static/illustrations/illustration_nodata.jpg" />
@@ -195,6 +222,7 @@ export default function LocationAnalytics() {
             width: '100%',
             marginTop: '3%',
             borderRadius: '10px',
+            backgroundColor: theme.palette.background.paper,
           }}
         >
           {/* React Leaflet Map Component */}

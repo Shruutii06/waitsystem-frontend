@@ -21,6 +21,7 @@ import {
   Input,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { useTheme } from '@mui/material/styles';
 // component
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -36,6 +37,7 @@ import { EditProfile } from '../../../redux/AuthReducer';
 
 export default function ProfileForm() {
   const authData = useSelector(({ auth }) => auth);
+  const theme = useTheme();
   const [profileuploading, setProfileuploading] = useState(false);
 
   const account = {
@@ -218,7 +220,11 @@ export default function ProfileForm() {
                   {...getFieldProps('name')}
                   error={Boolean(touched.name && errors.name)}
                   helperText={touched.name && errors.name}
-                  sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
+                  sx={{
+                    backgroundColor: theme.palette.mode === 'light' ? '#e6f2ff' : '#002a51',
+                    borderRadius: '8px',
+                    color: theme.palette.text.dark,
+                  }}
                 />
                 <TextField
                   fullWidth
@@ -228,7 +234,11 @@ export default function ProfileForm() {
                   {...getFieldProps('email')}
                   error={Boolean(touched.email && errors.email)}
                   helperText={touched.email && errors.email}
-                  sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
+                  sx={{
+                    backgroundColor: theme.palette.mode === 'light' ? '#e6f2ff' : '#002a51',
+                    borderRadius: '8px',
+                    color: theme.palette.text.dark,
+                  }}
                 />
                 <TextField
                   fullWidth
@@ -237,7 +247,11 @@ export default function ProfileForm() {
                   {...getFieldProps('location')}
                   error={Boolean(touched.location && errors.location)}
                   helperText={touched.location && errors.location}
-                  sx={{backgroundColor:'#FFFBEE', borderRadius:'8px'}}
+                  sx={{
+                    backgroundColor: theme.palette.mode === 'light' ? '#e6f2ff' : '#002a51',
+                    borderRadius: '8px',
+                    color: theme.palette.text.dark,
+                  }}
                 />
                 <FormControlLabel
                   control={

@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Card,
@@ -14,7 +14,10 @@ import {
   TableContainer,
   TablePagination,
   Skeleton,
+  CssBaseline,
+  useTheme,
 } from '@mui/material';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Page from '../components/Page';
@@ -37,12 +40,8 @@ const TABLE_HEAD = [
 ];
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
+  if (b[orderBy] < a[orderBy]) return -1;
+  if (b[orderBy] > a[orderBy]) return 1;
   return 0;
 }
 
@@ -60,7 +59,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.location.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user?.location?.name?.toLowerCase()?.includes(query.toLowerCase()) || false);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -75,29 +74,29 @@ function ManageDevices() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const dispatch = useDispatch();
   const places = useSelector(({ location }) => location.Places);
+  const poles = useSelector(({ pole }) => pole.poles);
+  const theme = useTheme();
+  const [poleFetchingError, setPoleFetchingError] = useState(false);
+  const [editData, setEditData] = useState();
 
   useEffect(() => {
-    if (!places || !places.length) {
-      dispatch(
-        FetchAllPlaces({
-          callback: (msg, data, recall) => {
-            recall();
-          },
-        })
-      );
+    document.body.style.backgroundColor = theme.palette.background.default;
+    return () => {
+      document.body.style.backgroundColor = '';
+    };
+  }, [theme]);
+
+  useEffect(() => {
+    if (!places?.length) {
+      dispatch(FetchAllPlaces());
     }
-  }, []);
+  }, [places, dispatch]);
 
-  const poles = useSelector(({ pole }) => pole.poles);
-  const [poleFetchingerror, setPoleFetchingError] = useState(false);
-
-  const FetchPoles = () => {
+  const fetchPoles = () => {
     setPoleFetchingError(false);
     dispatch(
       FetchAllPoles({
-        payload: {
-          fetchjunctions: true,
-        },
+        payload: { fetchjunctions: true },
         callback: (msg, data, recall) => {
           if (msg === 'error') {
             toast.error(typeof data === 'string' ? data : 'Something went wrong', {
@@ -111,17 +110,17 @@ function ManageDevices() {
             });
             setPoleFetchingError(true);
           }
-          recall();
+          if (typeof recall === 'function') {
+            recall();
+          }
         },
       })
     );
   };
 
   useEffect(() => {
-    if (!poles || !poles?.length) {
-      FetchPoles();
-    }
-  }, []);
+    if (!poles?.length) fetchPoles();
+  }, [poles, dispatch]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -129,7 +128,21 @@ function ManageDevices() {
     setOrderBy(property);
   };
 
-  const [editData, setEditData] = useState();
+  const handleChangePage = (event, newPage) => setPage(newPage);
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleFilterByName = (event) => setFilterName(event.target.value);
+
+  const filteredPoles = useMemo(
+    () => applySortFilter(poles || [], getComparator(order, orderBy), filterName),
+    [poles, order, orderBy, filterName]
+  );
+
+  const isUserNotFound = filteredPoles.length === 0;
 
   const poleActions = (type, data) => {
     switch (type) {
@@ -142,13 +155,8 @@ function ManageDevices() {
                 toast.error('Could not delete pole', {
                   position: 'top-right',
                   autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
                 });
-              } else {
+              } else if (typeof recall === 'function') {
                 recall();
               }
             },
@@ -165,16 +173,11 @@ function ManageDevices() {
             payload: data,
             callback: (msg, data, recall) => {
               if (msg === 'error') {
-                toast.error(typeof data === 'string' ? data : 'Error in editing pole details', {
+                toast.error(typeof data === 'string' ? data : 'Error editing pole details', {
                   position: 'top-right',
                   autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
                 });
-              } else {
+              } else if (typeof recall === 'function') {
                 recall();
               }
             },
@@ -186,43 +189,18 @@ function ManageDevices() {
     }
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
-
-  const filterPoles = (poles) => {
-    if (!Array.isArray(poles)) return null;
-    return poles?.filter(
-      (pole) =>
-        pole.serialno.toLowerCase().includes(filterName.toLowerCase()) ||
-        pole.location.name.toLowerCase().includes(filterName.toLowerCase())
-    );
-  };
-
-  const filteredPoles = filterPoles(poles);
-  const isUserNotFound = filteredPoles && filteredPoles.length === 0;
-
   return (
-    <Page title="Manage Devices" >
-      <Container >
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} >
-          <Typography variant="h3" gutterBottom>
+    <Page title="Manage Devices">
+      <Container>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Typography variant="h3" mt={0} mb={3} color={theme.palette.text.primary}>
             Manage Devices
           </Typography>
           <AddPoleDialogBox />
           {editData && <AddPoleDialogBox data={editData} callback={poleActions} setEditData={setEditData} />}
         </Stack>
 
-        <Card sx={{ backgroundColor: ' #FFFBEE' }}>
+        <Card sx={{ backgroundColor: 'background.default.light' }}>
           <UserListToolbar filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
@@ -248,7 +226,13 @@ function ManageDevices() {
                           tabIndex={-1}
                           style={{
                             cursor: 'pointer',
-                            backgroundColor: index % 2 === 0 ? '#e6f3ff' : '#ffe9a6',
+                            backgroundColor: (() => {
+                              if (theme.palette.mode === 'light') {
+                                return index % 2 === 0 ? '#e6f2ff' : '#ffe9a6';
+                              } 
+                                return index % 2 === 0 ? '#002a51' :' #9a7400';
+                              
+                            })(),
                           }}
                         >
                           <TableCell
@@ -336,4 +320,3 @@ function ManageDevices() {
 }
 
 export default ManageDevices;
-
