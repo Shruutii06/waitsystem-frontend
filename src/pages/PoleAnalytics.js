@@ -160,7 +160,7 @@ export default function PoleAnalytics() {
                               {analytics[poleid].pole.latitude}
                             </Typography>
 
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body2" color="text.secondary" fontWeight="bold">
                               Latitude
                             </Typography>
                           </Stack>
@@ -173,7 +173,7 @@ export default function PoleAnalytics() {
                               {analytics[poleid].pole.longitude}
                             </Typography>
 
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body2" color="text.secondary" fontWeight="bold">
                               Longitude
                             </Typography>
                           </Stack>
@@ -207,7 +207,7 @@ export default function PoleAnalytics() {
                           )}
                         </Typography>
 
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary"  fontWeight="bold">
                           Vehicles Passed
                         </Typography>
                       </Paper>
@@ -225,7 +225,7 @@ export default function PoleAnalytics() {
                           {FormatTime(analytics[poleid].pole.lastUpdatedAt)}
                         </Typography>
 
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary"  fontWeight="bold">
                           Last Updated
                         </Typography>
                       </Paper>

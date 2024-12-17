@@ -1,10 +1,11 @@
 // @mui
 import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
-import { Avatar, Paper, Typography, Stack } from '@mui/material'; // Import Stack for alignment
+import { Avatar, Paper, Typography, Stack, Box } from '@mui/material'; // Import Box for better layout control
 import { useNavigate } from 'react-router-dom';
 // utils
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'; // Import car icon
+import LocationOnIcon from '@mui/icons-material/LocationOn'; // Import location icon
 
 import { fShortenNumber } from '../utils/formatNumber';
 // components
@@ -34,7 +35,18 @@ TrafficLocationsUI.propTypes = {
   sx: PropTypes.object,
 };
 
-export default function TrafficLocationsUI({ title, subtitle1, subtitle2, bgcolor, total, id, icon, color = 'primary', sx, ...other }) {
+export default function TrafficLocationsUI({
+  title,
+  subtitle1,
+  subtitle2,
+  bgcolor,
+  total,
+  id,
+  icon,
+  color = 'primary',
+  sx,
+  ...other
+}) {
   const navigate = useNavigate();
 
   return (
@@ -53,7 +65,7 @@ export default function TrafficLocationsUI({ title, subtitle1, subtitle2, bgcolo
       }}
       {...other}
     >
-       <IconWrapperStyle
+      <IconWrapperStyle
         sx={{
           color: (theme) => theme.palette[color].dark,
           backgroundImage: (theme) =>
@@ -70,13 +82,19 @@ export default function TrafficLocationsUI({ title, subtitle1, subtitle2, bgcolo
         </Typography>
       </Stack>
 
-      <Typography variant="h6" sx={{  textTransform: 'capitalize', color: (theme) => theme.palette.text.primary }}>
-        {title}
-      </Typography>
-      <Typography variant="subtitle1" sx={{  textTransform: 'capitalize', color: (theme) => theme.palette.text.primary }}>
+      {/* Add location icon before title */}
+      <Stack direction="row" alignItems="center" spacing={1} justifyContent="center">
+        <LocationOnIcon sx={{ color: (theme) => theme.palette.text.primary }} />
+        <Typography  sx={{ textTransform: 'capitalize', color: (theme) => theme.palette.text.primary, fontSize: '1.35rem', fontWeight: 'bold' }}>
+          {title}
+        </Typography>
+      </Stack>
+
+      <Typography variant="subtitle1" sx={{ textTransform: 'capitalize', color: (theme) => theme.palette.text.primary, fontSize: '1.13rem' }}>
         {subtitle1}
       </Typography>
-      <Typography variant="subtitle2" sx={{ textTransform: 'capitalize', color: (theme) => theme.palette.text.secondary }}>
+
+      <Typography variant="subtitle2" sx={{ textTransform: 'capitalize', color: (theme) => theme.palette.text.secondary,fontSize: '0.9rem', fontWeight:'bold' }}>
         {subtitle2}
       </Typography>
     </Paper>

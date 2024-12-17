@@ -158,7 +158,7 @@ export default function LocationAnalytics() {
                         {Number.isNaN(location.poles?.length) ? '...' : fShortenNumber(location.poles?.length)}
                       </Typography>
 
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight:'bold' }}>
                         Poles Installed
                       </Typography>
                     </Paper>
@@ -183,7 +183,7 @@ export default function LocationAnalytics() {
                           : fShortenNumber(location.analytics?.totalVehicles)}
                       </Typography>
 
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight:'bold' }}>
                         Vehicles Passed
                       </Typography>
                     </Paper>
