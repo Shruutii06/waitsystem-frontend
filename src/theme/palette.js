@@ -101,9 +101,9 @@ const CHART_COLORS = {
 // Add mode-specific backgrounds and text colors
 const light = {
   text: {
-    primary: GREY[800],
-    secondary: GREY[600],
-    disabled: GREY[500],
+    primary: GREY[900],
+    secondary: GREY[800],
+    disabled: GREY[600],
   },
   background: {
     paper: '#fff',
@@ -125,7 +125,7 @@ const light = {
 const dark = {
   text: {
     primary: '#fff',
-    secondary: GREY[500],
+    secondary: GREY[700],
     disabled: GREY[600],
   },
   background: {

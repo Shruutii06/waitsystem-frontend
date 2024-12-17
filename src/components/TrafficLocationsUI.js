@@ -1,13 +1,13 @@
 // @mui
 import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
-import { Avatar, Card, Paper, Typography } from '@mui/material';
+import { Avatar, Paper, Typography, Stack } from '@mui/material'; // Import Stack for alignment
 import { useNavigate } from 'react-router-dom';
 // utils
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'; // Import car icon
+
 import { fShortenNumber } from '../utils/formatNumber';
-
 // components
-
 
 // ----------------------------------------------------------------------
 
@@ -30,20 +30,21 @@ TrafficLocationsUI.propTypes = {
   subtitle1: PropTypes.string,
   subtitle2: PropTypes.string,
   title: PropTypes.string.isRequired,
-  total: PropTypes.number.isRequired,
+  total: PropTypes.oneOfType([PropTypes.number, PropTypes.element]).isRequired, // Update to allow JSX element
   sx: PropTypes.object,
 };
 
-export default function TrafficLocationsUI({ title,subtitle1,subtitle2, bgcolor,total,id, icon, color = 'primary', sx, ...other }) {
-   const navigate= useNavigate();
+export default function TrafficLocationsUI({ title, subtitle1, subtitle2, bgcolor, total, id, icon, color = 'primary', sx, ...other }) {
+  const navigate = useNavigate();
+
   return (
     <Paper
-    variant="outlined"
-    onClick={()=>navigate(`/dashboard/location/${id}`)}
+      variant="outlined"
+      onClick={() => navigate(`/dashboard/location/${id}`)}
       sx={{
-        width:"100%",
-        cursor:"pointer",
-        p:1.5,
+        width: '100%',
+        cursor: 'pointer',
+        p: 1.5,
         boxShadow: 0,
         textAlign: 'center',
         color: (theme) => theme.palette[color].darker,
@@ -52,28 +53,32 @@ export default function TrafficLocationsUI({ title,subtitle1,subtitle2, bgcolor,
       }}
       {...other}
     >
-      <IconWrapperStyle
+       <IconWrapperStyle
         sx={{
           color: (theme) => theme.palette[color].dark,
           backgroundImage: (theme) =>
-            `linear-gradient(135deg, ${alpha(theme.palette[color].dark, 0)} 0%, ${alpha(
-              theme.palette[color].dark,
-              0.24
-            )} 100%)`,
+            `linear-gradient(135deg, ${alpha(theme.palette[color].dark, 0)} 0%, ${alpha(theme.palette[color].dark, 0.24)} 100%)`,
         }}
       >
-      
-       <Avatar alt="Remy Sharp" src={icon}  sx={{ width: "100%", height: "100%" }}/>
+        <Avatar alt="Remy Sharp" src={icon} sx={{ width: '100%', height: '100%' }} />
       </IconWrapperStyle>
 
-      <Typography variant="h3">{fShortenNumber(total)}</Typography>
-      <Typography variant="h6" sx={{ opacity: 0.72, textTransform:"capitalize"}}>
+      <Stack direction="row" alignItems="center" spacing={2} justifyContent="center">
+        <DirectionsCarIcon fontSize="large" sx={{ color: (theme) => theme.palette.text.primary }} /> {/* Icon color based on theme */}
+        <Typography variant="h3" sx={{ color: (theme) => theme.palette.text.primary }}>
+          {fShortenNumber(total)}
+        </Typography>
+      </Stack>
+
+      <Typography variant="h6" sx={{  textTransform: 'capitalize', color: (theme) => theme.palette.text.primary }}>
         {title}
       </Typography>
-      <Typography variant="subtitle1" sx={{opacity:0.7, textTransform:"capitalize"}}>{subtitle1} </Typography>
-      <Typography variant="subtitle2" sx={{opacity:0.6, textTransform:"capitalize"}}>{subtitle2} </Typography>
-    
-      
+      <Typography variant="subtitle1" sx={{  textTransform: 'capitalize', color: (theme) => theme.palette.text.primary }}>
+        {subtitle1}
+      </Typography>
+      <Typography variant="subtitle2" sx={{ textTransform: 'capitalize', color: (theme) => theme.palette.text.secondary }}>
+        {subtitle2}
+      </Typography>
     </Paper>
   );
 }
