@@ -28,8 +28,8 @@ export default function ProfileSettings() {
     <Page title="Account Settings">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
-          <Typography variant="h3" gutterBottom>
-            Account Settings
+        <Typography variant="h3"  color={theme.palette.text.primary}>            
+          Account Settings
           </Typography>
         </Stack>
 

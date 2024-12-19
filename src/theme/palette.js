@@ -125,7 +125,7 @@ const light = {
 const dark = {
   text: {
     primary: '#fff',
-    secondary: GREY[700],
+    secondary: GREY[600],
     disabled: GREY[600],
   },
   background: {
