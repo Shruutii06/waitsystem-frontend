@@ -1,6 +1,7 @@
 import { useTheme } from '@mui/material/styles';
 import { Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion'; // Import Framer Motion
 import PenaltyStatsUI from './PenaltyStatsUI';
 
 export default function PenaltyStats() {
@@ -30,30 +31,32 @@ export default function PenaltyStats() {
 
   return (
     <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
-       <Typography
+      <Typography
         variant="h2"
         align="center"
         gutterBottom
         width="25%"
         sx={{ color: theme.palette.text.primary }} // Adjust text color based on the theme
       >
-          Weekly Vehicles Passed
-        </Typography>
+        Weekly Vehicles Passed
+      </Typography>
       <Grid item xs={12} md={6} lg={8}>
-        {/* Add the weekly vehicles passed heading here */}
-        
-
-        
-        <PenaltyStatsUI
-          title="Vehicles Passed"
-          subheader="(+30%) than last Week"
-          chartData={past7Days.map((day, index) => ({
-            label: day,
-            value: vehicles[index],
-          }))}
-          chartColors={theme.palette.mode === 'dark' ? ['#FFFFFF', '#D3D3D3'] : ['#000000', '#707070']}
+        {/* Wrap the chart component in a motion.div for hover scaling */}
+        <motion.div
+          whileHover={{ scale: 1.1 }} // Scale up the chart on hover
+          transition={{ type: 'spring', stiffness: 200 }} // Smooth spring transition
+        >
+          <PenaltyStatsUI
+            title="Vehicles Passed"
+            subheader="(+30%) than last Week"
+            chartData={past7Days.map((day, index) => ({
+              label: day,
+              value: vehicles[index],
+            }))}
+            chartColors={theme.palette.mode === 'dark' ? ['#FFFFFF', '#D3D3D3'] : ['#000000', '#707070']}
             // Background color for the chart
-        />
+          />
+        </motion.div>
       </Grid>
     </Grid>
   );
